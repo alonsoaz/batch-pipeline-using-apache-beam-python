@@ -3,7 +3,7 @@ import argparse
 from apache_beam.options.pipeline_options import PipelineOptions
 from sys import argv
 
-PROJECT_ID = 'aniket-g'
+PROJECT_ID = 'dataflow-apache-beam-298400'
 SCHEMA = 'sr:INTEGER,abv:FLOAT,id:INTEGER,name:STRING,style:STRING,ounces:FLOAT'
 
 def discard_incomplete(data):
@@ -33,7 +33,7 @@ if __name__ == '__main__':
 
     p = beam.Pipeline(options=PipelineOptions())
 
-    (p | 'ReadData' >> beam.io.ReadFromText('gs://ag-pipeline/batch/beers.csv', skip_header_lines =1)
+    (p | 'ReadData' >> beam.io.ReadFromText('gs://dataflow-apache-beam/batch/beers.csv', skip_header_lines =1)
        | 'SplitData' >> beam.Map(lambda x: x.split(','))
        | 'FormatToDict' >> beam.Map(lambda x: {"sr": x[0], "abv": x[1], "ibu": x[2], "id": x[3], "name": x[4], "style": x[5], "brewery_id": x[6], "ounces": x[7]}) 
        | 'DeleteIncompleteData' >> beam.Filter(discard_incomplete)
